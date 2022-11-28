@@ -45,14 +45,14 @@ If no image names were provided, the build command will try to build all known i
 
 ### Options
 
-    --maintainer="acme"
+#### --maintainer="acme"
 
-    ```bash
-    ./build.sh --maintainer="acme"
-    ```
+```bash
+./build.sh --maintainer="acme"
+```
 
 ## Typical full example
 
 ```bash
-./update.sh && ./build.sh -y -q --maintainer="nocs"
+./update.sh && ./build.sh -y -q --maintainer="acme" ubuntu lap:7.4 fw:7.4 laravel
 ```
