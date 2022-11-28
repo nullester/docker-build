@@ -184,6 +184,7 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
     V_CMD="docker build "
     V_CMD+="--build-arg UID=1000 "
     V_CMD+="--build-arg GID=1000 "
+    V_CMD+="--build-arg MAINTAINER=\"${V_MAINTAINER}\" "
     if [ "$V_RELEASE" != "" ]; then
         V_CMD+="--build-arg RELEASE=\"${V_RELEASE}\" "
     fi
