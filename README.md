@@ -43,9 +43,27 @@ If no image names were provided, the build command will try to build all known i
 ./build.sh
 ```
 
-### Options
+### build.sh options
+
+#### -c
+
+Enables the cache mode.
+
+```bash
+./build.sh -c
+```
+
+#### -y
+
+Enables the yes-to-all mode.
+
+```bash
+./build.sh -y
+```
 
 #### --maintainer="acme"
+
+Sets the maintainer name.
 
 ```bash
 ./build.sh --maintainer="acme"
