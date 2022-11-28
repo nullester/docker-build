@@ -8,6 +8,14 @@ Clone this repository locally. For example in _~/.docker_ which I use for all my
 
 In this folder I also keep my _docker-compose.yml_ file.
 
+Installation example
+```bash
+[[ ! -d ~/.docker ]] && \
+git clone git@github.com:nullester/docker-build.git ~/.docker && \
+git clone git@github.com:nullester/docker-ubuntu.git ~/.docker/ubuntu && \
+git clone git@github.com:nullester/docker-lap.git ~/.docker/lap
+```
+
 ### Images
 
 If you want all my docker images, run this command within your _.docker_ folder
