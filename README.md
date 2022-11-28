@@ -46,5 +46,5 @@ If no image names were provided, the build command will try to build all known i
 ## Typical full example
 
 ```bash
-./update && ./build.sh --maintainer="acme" ubuntu lap:7.4
+./update.sh && ./build.sh -y -q --maintainer="nocs"
 ```

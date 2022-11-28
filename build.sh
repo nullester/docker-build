@@ -8,10 +8,20 @@ fi
 V_IMAGES=( )
 V_MAINTAINER="nullester"
 V_CACHE=0
+V_YES_TO_ALL=0
+V_QUIET_BUILD=0
 while (( "$#" )); do
     case "$1" in
-        --cache)
+        -c|--cache)
             V_CACHE=1
+            shift
+            ;;
+        -y|--yes|--yes-to-all)
+            V_YES_TO_ALL=1
+            shift
+            ;;
+        -q|--quiet)
+            V_QUIET_BUILD=1
             shift
             ;;
         --maintainer|--maintainer=*)
@@ -47,12 +57,23 @@ if [[ $V_NUM_IMAGES -eq 0 ]]; then
         V_IMAGES+=( "lap:8.0" )
         V_IMAGES+=( "lap:8.1" )
     fi
+    for V_DIR in $V_ROOT/*; do
+        V_BASENAME=$( basename "$V_DIR" )
+        if [[ $V_BASENAME == "ubuntu" || $V_BASENAME == "lap" ]]; then
+            continue
+        fi
+        if [[ -f "$V_DIR/Dockerfile" && -d "$V_DIR/.git" ]]; then
+            cd "$VDIR"
+            echo && echo -e "Updating \033[032m${V_BASENAME}\033[0m."
+            git pull
+            cd "$V_PWD"
+        fi
+    done
     V_NUM_IMAGES=${#V_IMAGES[@]}
 fi
 
 echo && echo -e "total images to build: \033[032m${V_NUM_IMAGES}\033[0m"
 
-V_YES_TO_ALL=0
 V_NO_TO_ALL=0
 for V_IMAGE in "${V_IMAGES[@]}"; do
 
@@ -125,7 +146,7 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
                     echo
                     echo -e "Removing docker image \033[032m${V_TAG}\033[0m (\033[032m${V_IMG_ID}\033[0m)"
                     echo
-                    docker rmi "$V_IMG_ID"
+                    docker rmi "$V_IMG_ID" > /dev/null 2>&1
                 fi
             fi
         fi
@@ -143,14 +164,24 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
     if [[ $V_CACHE -eq 0 ]]; then
         V_CMD+="--no-cache "
     fi
+    if [[ $V_QUIET_BUILD -eq 1 ]]; then
+        V_CMD+="-q "
+    fi
     V_CMD+="--tag \"${V_TAG}\" "
     V_CMD+="--file \"${V_DOCKERFILE}\" "
     V_CMD+="$( dirname $V_DOCKERFILE )"
 
     echo
     echo -e "build command: \033[032m${V_CMD}\033[0m"
-    eval "$V_CMD"
     echo
+    if [[ $V_QUIET_BUILD -eq 1 ]]; then
+        echo -e -n "Building \033[032m${V_TAG}\033[0m..."
+    fi
+    eval "$V_CMD"
+    if [[ $V_QUIET_BUILD -eq 1 ]]; then
+        echo -e "\033[032mdone\033[0m"
+        echo
+    fi
 
     V_TIME_END=$( date +%s )
     V_TIME_DIFF=$(( V_TIME_END - V_TIME_START))
