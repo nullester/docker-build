@@ -71,5 +71,5 @@ Sets the maintainer name.
 ## Typical full example
 
 ```bash
-./update.sh && ./build.sh -y -q --maintainer="acme" ubuntu lap:7.4 fw:7.4 laravel
+./update.sh && ./build.sh -y -q --maintainer="acme" ubuntu lap:8.1 zoneminder
 ```
