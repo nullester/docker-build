@@ -8,7 +8,7 @@ Clone this repository locally. For example in _~/.docker_ which I use for all my
 
 In this folder I also keep my _docker-compose.yml_ file.
 
-Installation example
+BASH installation example
 ```bash
 [[ ! -d ~/.docker ]] && \
 git clone git@github.com:nullester/docker-build.git ~/.docker && \
