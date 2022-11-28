@@ -14,7 +14,7 @@ If you want all my docker images, run this command within your _.docker_ folder
 
 ```bash
 git clone git@github.com:nullester/docker-ubuntu.git ubuntu && \
-git clone git@github.com:nullester/docker-ubuntu.git lap
+git clone git@github.com:nullester/docker-lap.git lap
 ```
 
 ## Building
@@ -46,7 +46,5 @@ If no image names were provided, the build command will try to build all known i
 ## Typical full example
 
 ```bash
-./build.sh --maintainer="acme" ubuntu lap:7.4
+./update && ./build.sh --maintainer="acme" ubuntu lap:7.4
 ```
-
-
