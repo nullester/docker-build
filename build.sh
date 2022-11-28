@@ -111,13 +111,6 @@ if [[ $V_YES_TO_ALL -eq 0 ]]; then
     fi
 fi
 
-
-
-
-exit
-
-
-
 V_NO_TO_ALL=0
 for V_IMAGE in "${V_IMAGES[@]}"; do
 
