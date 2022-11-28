@@ -54,9 +54,17 @@ V_ROOT=$( dirname $( realpath "$0" ) )
 V_NUM_IMAGES=${#V_IMAGES[@]}
 if [[ $V_NUM_IMAGES -eq 0 ]]; then
     if [[ -d "${V_ROOT}/ubuntu" ]]; then
+        cd "$V_ROOT/ubuntu"
+        echo && echo -e "Updating \033[032mubuntu\033[0m"
+        git pull
+        cd "$V_PWD"
         V_IMAGES+=( "ubuntu" )
     fi
     if [[ -d "${V_ROOT}/lap" ]]; then
+        cd "$V_ROOT/lap"
+        echo && echo -e "Updating \033[032mlap\033[0m"
+        git pull
+        cd "$V_PWD"
         V_IMAGES+=( "lap:7.1" )
         V_IMAGES+=( "lap:7.2" )
         V_IMAGES+=( "lap:7.3" )
@@ -71,8 +79,9 @@ if [[ $V_NUM_IMAGES -eq 0 ]]; then
         fi
         if [[ -f "$V_DIR/Dockerfile" && -d "$V_DIR/.git" ]]; then
             cd "$VDIR"
-            echo && echo -e "Updating \033[032m${V_BASENAME}\033[0m."
+            echo && echo -e "Updating \033[032m${V_BASENAME}\033[0m"
             git pull
+            V_IMAGES+=( "${V_BASENAME}" )
             cd "$V_PWD"
         fi
     done
@@ -101,6 +110,13 @@ if [[ $V_YES_TO_ALL -eq 0 ]]; then
         exit 0
     fi
 fi
+
+
+
+
+exit
+
+
 
 V_NO_TO_ALL=0
 for V_IMAGE in "${V_IMAGES[@]}"; do
