@@ -61,6 +61,14 @@ Enables the yes-to-all mode.
 ./build.sh -y
 ```
 
+#### -q
+
+Enables the quiet build mode.
+
+```bash
+./build.sh -q
+```
+
 #### --maintainer="acme"
 
 Sets the maintainer name.
