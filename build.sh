@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $( which docker | wc -l ) -eq 0 ]; then
-    echo && echo -e "\033[031merror: \033[032mdocker\033[031m not installed\033[0m"
+    echo && echo -e "\033[031mError: \033[032mdocker\033[031m not installed\033[0m"
     exit 1
 fi
 
@@ -32,7 +32,7 @@ while (( "$#" )); do
             fi
             ;;
         -*|--*=) # unsupported flags
-            echo && echo -e "\033[031merror: unsupported flag \033[032m$1\033[0m" >&2
+            echo && echo -e "\033[031mError: unsupported flag \033[032m$1\033[0m" >&2
             exit 1
             ;;
         *) # preserve positional arguments
@@ -72,7 +72,7 @@ if [[ $V_NUM_IMAGES -eq 0 ]]; then
     V_NUM_IMAGES=${#V_IMAGES[@]}
 fi
 
-echo && echo -e "total images to build: \033[032m${V_NUM_IMAGES}\033[0m"
+echo && echo -e "Total images to build: \033[032m${V_NUM_IMAGES}\033[0m"
 
 V_NO_TO_ALL=0
 for V_IMAGE in "${V_IMAGES[@]}"; do
@@ -87,13 +87,13 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
     V_RELEASE_NAME="$V_RELEASE"
     [[ "$V_RELEASE_NAME" == "" ]] && V_RELEASE_NAME="latest"
 
-    echo && echo -e "building image \033[032m${V_NAME}\033[0m release \033[032m${V_RELEASE_NAME}\033[0m"
+    echo && echo -e "Building image \033[032m${V_NAME}\033[0m release \033[032m${V_RELEASE_NAME}\033[0m"
 
     V_DOCKERFILE="${V_ROOT}/${V_NAME}/Dockerfile"
-    echo -e "using Dockerfile \033[032m${V_DOCKERFILE}\033[0m"
+    echo -e "Using Dockerfile \033[032m${V_DOCKERFILE}\033[0m"
 
     if [ ! -f "$V_DOCKERFILE" ]; then
-        echo -e "\033[031merror: Dockerfile \033[032m${V_DOCKERFILE}\033[031m not found\033[0m"
+        echo -e "\033[031mError: Dockerfile \033[032m${V_DOCKERFILE}\033[031m not found\033[0m"
         exit 1
     fi
 
@@ -111,7 +111,7 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
     else
         V_TAG="${V_MAINTAINER}/${V_NAME}:latest"
     fi
-    echo -e "using image tag \033[032m${V_TAG}\033[0m"
+    echo -e "Using image tag \033[032m${V_TAG}\033[0m"
 
     if [[ $( F_TAG_EXISTS "$V_TAG" ) -eq 1 ]]; then
         if [[ $V_NO_TO_ALL -eq 1 ]]; then
@@ -145,7 +145,6 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
                 if [ "$V_IMG_ID" != "" ]; then
                     echo
                     echo -e "Removing docker image \033[032m${V_TAG}\033[0m (\033[032m${V_IMG_ID}\033[0m)"
-                    echo
                     docker rmi "$V_IMG_ID" > /dev/null 2>&1
                 fi
             fi
@@ -172,7 +171,7 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
     V_CMD+="$( dirname $V_DOCKERFILE )"
 
     echo
-    echo -e "build command: \033[032m${V_CMD}\033[0m"
+    echo -e "Build command: \033[032m${V_CMD}\033[0m"
     echo
     if [[ $V_QUIET_BUILD -eq 1 ]]; then
         echo -e -n "Building \033[032m${V_TAG}\033[0m..."
