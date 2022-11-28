@@ -42,6 +42,13 @@ while (( "$#" )); do
     esac
 done
 
+if [[ $V_CACHE -eq 1 || $V_YES_TO_ALL -eq 1 || $V_QUIET_BUILD -eq 1 ]]; then
+    echo
+    [[ $V_CACHE -eq 1 ]] && echo -e "\033[032mWith cache mode\033[0m enabled"
+    [[ $V_YES_TO_ALL -eq 1  ]] && echo -e "\033[032mAnswer yes-to-all mode\033[0m enabled"
+    [[ $V_QUIET_BUILD -eq 1 ]] && echo -e "\033[032mQuiet build mode\033[0m enabled"
+fi
+
 V_ROOT=$( dirname $( realpath "$0" ) )
 
 V_NUM_IMAGES=${#V_IMAGES[@]}
@@ -72,7 +79,28 @@ if [[ $V_NUM_IMAGES -eq 0 ]]; then
     V_NUM_IMAGES=${#V_IMAGES[@]}
 fi
 
+if [[ $V_NUM_IMAGES -eq 0 ]]; then
+    echo && echo -e "\033[0mNo images found to build, exiting\033[0m"
+    exit 0
+fi
+
 echo && echo -e "Total images to build: \033[032m${V_NUM_IMAGES}\033[0m"
+V_I=1
+for V_IMAGE in "${V_IMAGES[@]}"; do
+    echo -e "\033[033m${V_I}\033[0m \033[032m${V_IMAGE}\033[0m"
+    V_I=$(( V_I + 1 ))
+done
+if [[ $V_YES_TO_ALL -eq 0 ]]; then
+    echo
+    echo -e -n "Do you want to (re)build all these Docker images? "
+    echo -e -n "(\033[032my\033[0mes/\033[032mN\033[0mo)\033[032m"
+    read -p " " V_CONFIRM
+    echo -e -n "\033[0m"
+    if [[ "${V_CONFIRM,,}" != "y" && "${V_CONFIRM,,}" != "yes" ]]; then
+        echo && echo -e "\033[031maborted\033[0m"
+        exit 0
+    fi
+fi
 
 V_NO_TO_ALL=0
 for V_IMAGE in "${V_IMAGES[@]}"; do
