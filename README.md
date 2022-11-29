@@ -4,21 +4,21 @@ This package makes building Docker images a little more easy.
 
 ## Installation
 
-Clone this repository locally. For example in _~/.docker_ which I use for all my Docker images.
+Clone this repository locally. For example in _~/.docker/.build_ which I use for all my Docker images.
 
-In this folder I also keep my _docker-compose.yml_ file.
+In this _.docker_ folder I keep my _docker-compose.yml_ file.
 
 BASH installation example
 ```bash
-[[ ! -d ~/.docker ]] && \
-git clone git@github.com:nullester/docker-build.git ~/.docker && \
-git clone git@github.com:nullester/docker-ubuntu.git ~/.docker/ubuntu && \
-git clone git@github.com:nullester/docker-lap.git ~/.docker/lap
+[[ ! -d ~/.docker/.build ]] && \
+git clone git@github.com:nullester/docker-build.git ~/.docker/.build && \
+git clone git@github.com:nullester/docker-ubuntu.git ~/.docker/.build/ubuntu && \
+git clone git@github.com:nullester/docker-lap.git ~/.docker/.build/lap
 ```
 
 ## Building
 
-Within this local _.docker_ folder, clone any git repository that has a _Dockerfile_.
+Within this local _.docker/.build_ folder, clone any git repository that has a _Dockerfile_.
 
 __IMPORTANT: Make sure the folder name matches the image name!__
 
@@ -71,5 +71,5 @@ Sets the maintainer name.
 ## Typical full example
 
 ```bash
-./update.sh && ./build.sh -y -q --maintainer="acme" ubuntu lap:8.1 zoneminder
+./update.sh && ./build.sh -y -q --maintainer="acme" ubuntu lap:7.4
 ```
