@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo && echo -e "Updating \033[032mbuild\033[0m"
 git pull

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ $( which docker | wc -l ) -eq 0 ]; then
     echo && echo -e "\033[031mError: \033[032mdocker\033[031m not installed\033[0m"
