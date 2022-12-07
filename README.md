@@ -60,11 +60,12 @@ Enables the quiet build mode.
 ./build.sh -q
 ```
 
-#### --maintainer="acme"
+#### -m "acme" / --maintainer="acme"
 
 Sets the maintainer name.
 
 ```bash
+./build.sh -m "acme"
 ./build.sh --maintainer="acme"
 ```
 

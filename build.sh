@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+F_TAG_EXISTS() {
+    local V_TAG="$1"
+    if [[ "$(docker images -q "$V_TAG" 2> /dev/null)" != "" ]]; then
+        echo -n 1
+    else
+        echo -n 0
+    fi
+}
+
 if [ $( which docker | wc -l ) -eq 0 ]; then
     echo && echo -e "\033[031mError: \033[032mdocker\033[031m not installed\033[0m"
     exit 1
@@ -24,7 +33,7 @@ while (( "$#" )); do
             V_QUIET_BUILD=1
             shift
             ;;
-        --maintainer|--maintainer=*)
+        -m|--maintainer|--maintainer=*)
             if [[ "$1" =~ ^[^\=]+\=(.+)$ ]]; then
                 V_MAINTAINER="${BASH_REMATCH[1]}"; shift 1
             else
@@ -130,18 +139,9 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
     echo -e "Using Dockerfile \033[032m${V_DOCKERFILE}\033[0m"
 
     if [ ! -f "$V_DOCKERFILE" ]; then
-        echo -e "\033[031mError: Dockerfile \033[032m${V_DOCKERFILE}\033[031m not found\033[0m"
+        echo && echo -e "\033[031mError: Dockerfile \033[032m${V_DOCKERFILE}\033[031m not found\033[0m"
         exit 1
     fi
-
-    F_TAG_EXISTS() {
-        local V_TAG="$1"
-        if [[ "$(docker images -q "$V_TAG" 2> /dev/null)" != "" ]]; then
-            echo -n 1
-        else
-            echo -n 0
-        fi
-    }
 
     if [ "$V_RELEASE" != "" ]; then
         V_TAG="${V_MAINTAINER}/${V_NAME}:${V_RELEASE}"
@@ -161,7 +161,7 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
                 echo -e -n "Image tag \033[032m${V_TAG}\033[0m already exists.\nDo you want to rebuild it? "
                 echo -e -n "(\033[032my\033[0mes/Yes to \033[032ma\033[0mll/\033[032mN\033[0mo/\033[032ms\033[0mkip all)\033[032m"
                 read -p " " V_CONFIRM
-                echo -e -n "\033[0m"
+                echo -e "\033[0m"
                 if [[ "${V_CONFIRM,,}" == "a" ]]; then
                     V_YES_TO_ALL=1
                     V_CONFIRM="y"
@@ -180,7 +180,6 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
             if [[ $V_CACHE == 0 ]]; then
                 V_IMG_ID=$(docker images --filter=reference="${V_TAG}" -q)
                 if [ "$V_IMG_ID" != "" ]; then
-                    echo
                     echo -e "Removing docker image \033[032m${V_TAG}\033[0m (\033[032m${V_IMG_ID}\033[0m)"
                     docker rmi "$V_IMG_ID" > /dev/null 2>&1
                 fi
@@ -208,21 +207,17 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
     V_CMD+="--file \"${V_DOCKERFILE}\" "
     V_CMD+="$( dirname $V_DOCKERFILE )"
 
-    echo
     echo -e "Build command: \033[032m${V_CMD}\033[0m"
-    echo
     if [[ $V_QUIET_BUILD -eq 1 ]]; then
         echo -e -n "Building \033[032m${V_TAG}\033[0m..."
     fi
     eval "$V_CMD"
     if [[ $V_QUIET_BUILD -eq 1 ]]; then
         echo -e "\033[032mdone\033[0m"
-        echo
     fi
 
     V_TIME_END=$( date +%s )
     V_TIME_DIFF=$(( V_TIME_END - V_TIME_START))
-
     if [[ $( F_TAG_EXISTS "$V_TAG" ) -eq 1 ]]; then
         echo -e "Docker image \033[032m${V_TAG}\033[0m created in \033[032m${V_TIME_DIFF}\033[0m seconds!"
     else
