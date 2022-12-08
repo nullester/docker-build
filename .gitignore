@@ -1,6 +1,7 @@
 *
 !.gitignore
 !build.sh
+!install.sh
 !LICENSE
 !README.md
 !update.sh
