@@ -10,7 +10,7 @@ In this _.docker_ folder I keep my _docker-compose.yml_ file.
 
 BASH installation example
 ```bash
-https://raw.githubusercontent.com/nullester/docker-build/master/install.sh | bash
+curl -s https://raw.githubusercontent.com/nullester/docker-build/master/install.sh | bash
 ```
 
 ## Building
