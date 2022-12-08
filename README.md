@@ -10,10 +10,7 @@ In this _.docker_ folder I keep my _docker-compose.yml_ file.
 
 BASH installation example
 ```bash
-[[ ! -d ~/.docker/.build ]] && \
-git clone git@github.com:nullester/docker-build.git ~/.docker/.build && \
-git clone git@github.com:nullester/docker-ubuntu.git ~/.docker/.build/ubuntu && \
-git clone git@github.com:nullester/docker-lap.git ~/.docker/.build/lap
+https://raw.githubusercontent.com/nullester/docker-build/master/install.sh | bash
 ```
 
 ## Building
@@ -21,6 +18,20 @@ git clone git@github.com:nullester/docker-lap.git ~/.docker/.build/lap
 Within this local _.docker/.build_ folder, clone any git repository that has a _Dockerfile_.
 
 __IMPORTANT: Make sure the folder name matches the image name!__
+
+### Suggested images to install
+
+*Ubuntu*
+
+```bash
+git clone git@github.com:nullester/docker-ubuntu.git ~/.docker/.build/ubuntu
+```
+
+*Linux/Apache2/PHP server*
+
+```bash
+git clone git@github.com:nullester/docker-lap.git ~/.docker/.build/lap
+```
 
 Then run command:
 
