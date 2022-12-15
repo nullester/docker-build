@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 
+if [[ $( which realpath | wc -l ) -eq 0 ]]; then
+    realpath() {
+        local _FILE="$1"
+        if [[ "$_FILE" == "" ]]; then
+            echo "realpath: missing operand"
+            exit 1
+        fi
+        echo "$( pwd )/${_FILE}"
+    }
+fi
+
+V_ROOT=$( dirname $( realpath "$0" ) )
+
+# bash "${V_ROOT}/update.sh"
+
 F_TAG_EXISTS() {
     local V_TAG="$1"
     if [[ "$(docker images -q "$V_TAG" 2> /dev/null)" != "" ]]; then
@@ -58,8 +73,6 @@ if [[ $V_CACHE -eq 1 || $V_YES_TO_ALL -eq 1 || $V_QUIET_BUILD -eq 1 ]]; then
     [[ $V_QUIET_BUILD -eq 1 ]] && echo -e "\033[032mQuiet build mode\033[0m enabled"
 fi
 
-V_ROOT=$( dirname $( realpath "$0" ) )
-
 V_NUM_IMAGES=${#V_IMAGES[@]}
 if [[ $V_NUM_IMAGES -eq 0 ]]; then
     if [[ -d "${V_ROOT}/ubuntu" ]]; then
@@ -105,7 +118,7 @@ fi
 echo && echo -e "Total images to build: \033[032m${V_NUM_IMAGES}\033[0m"
 V_I=1
 for V_IMAGE in "${V_IMAGES[@]}"; do
-    echo -e "\033[033m${V_I}\033[0m \033[032m${V_IMAGE}\033[0m"
+    echo -e "\033[033m${V_I}\033[0m \033[032m${V_MAINTAINER}/${V_IMAGE}\033[0m"
     V_I=$(( V_I + 1 ))
 done
 if [[ $V_YES_TO_ALL -eq 0 ]]; then
