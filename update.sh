@@ -22,7 +22,7 @@ _IFS=$IFS
 IFS=$'\n'
 for V_DIR in $V_ROOT/*; do
     if [[ -f "$V_DIR/Dockerfile" && -d "$V_DIR/.git" ]]; then
-        cd "$VDIR"
+        cd "$V_DIR"
         echo -e "Updating \033[032m$( basename "$V_DIR" )\033[0m..."
         git checkout master && git pull && git status
         echo -e "\033[032mdone\033[0m"
