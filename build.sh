@@ -13,7 +13,7 @@ fi
 
 V_ROOT=$( dirname $( realpath "$0" ) )
 
-# bash "${V_ROOT}/update.sh"
+echo -e "Docker Build \033[032m$( cat "$V_ROOT/VERSION")\033[0m"
 
 F_TAG_EXISTS() {
     local V_TAG="$1"
@@ -25,7 +25,7 @@ F_TAG_EXISTS() {
 }
 
 if [ $( which docker | wc -l ) -eq 0 ]; then
-    echo && echo -e "\033[031mError: \033[032mdocker\033[031m not installed\033[0m"
+    echo -e "\033[031mError: \033[032mdocker\033[031m not installed\033[0m"
     exit 1
 fi
 

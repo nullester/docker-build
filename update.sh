@@ -11,11 +11,14 @@ if [[ $( which realpath | wc -l ) -eq 0 ]]; then
     }
 fi
 
+V_ROOT=$( dirname $( realpath "$0" ) )
+
+echo -e "Docker Build \033[032m$( cat "$V_ROOT/VERSION")\033[0m"
+
 echo -e "Updating \033[032mbuild\033[0m..."
 git checkout master && git pull && git status
 echo -e "\033[032mdone\033[0m"
 
-V_ROOT=$( dirname $( realpath "$0" ) )
 V_PWD="$( pwd )"
 
 _IFS=$IFS
