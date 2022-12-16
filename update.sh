@@ -12,7 +12,7 @@ if [[ $( which realpath | wc -l ) -eq 0 ]]; then
 fi
 
 echo -e "Updating \033[032mbuild\033[0m..."
-git checkout master && git pull
+git checkout master && git pull && git status
 echo -e "\033[032mdone\033[0m"
 
 V_ROOT=$( dirname $( realpath "$0" ) )
@@ -24,7 +24,7 @@ for V_DIR in $V_ROOT/*; do
     if [[ -f "$V_DIR/Dockerfile" && -d "$V_DIR/.git" ]]; then
         cd "$VDIR"
         echo -e "Updating \033[032m$( basename "$V_DIR" )\033[0m..."
-        git checkout master && git pull
+        git checkout master && git pull && git status
         echo -e "\033[032mdone\033[0m"
         cd "$V_PWD"
     fi
