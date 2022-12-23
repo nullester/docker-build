@@ -10,6 +10,16 @@ if [[ $( which realpath | wc -l ) -eq 0 ]]; then
         echo "$( pwd )/${_FILE}"
     }
 fi
+if [[ $( which strtolower | wc -l ) -eq 0 ]]; then
+    strtolower() {
+        local STR="$1"
+        if [[ "$SHELL" == "/bin/zsh" ]]; then
+            echo -n "${STR:l}"
+        else
+            echo -n "${STR,,}"
+        fi
+    }
+fi
 
 V_ROOT=$( dirname $( realpath "$0" ) )
 
@@ -127,7 +137,8 @@ if [[ $V_YES_TO_ALL -eq 0 ]]; then
     echo -e -n "(\033[032my\033[0mes/\033[032mN\033[0mo)\033[032m"
     read -p " " V_CONFIRM
     echo -e -n "\033[0m"
-    if [[ "${V_CONFIRM,,}" != "y" && "${V_CONFIRM,,}" != "yes" ]]; then
+    V_CONFIRM=$( strtolower "$V_CONFIRM" )
+    if [[ "${V_CONFIRM}" != "y" && "${V_CONFIRM}" != "yes" ]]; then
         echo && echo -e "\033[031maborted\033[0m"
         exit 0
     fi
@@ -137,12 +148,14 @@ V_NO_TO_ALL=0
 for V_IMAGE in "${V_IMAGES[@]}"; do
 
     if [[ $V_IMAGE =~ ^([^\:]+)\:(.*)$ ]]; then
-        V_NAME="${BASH_REMATCH[1],,}"
-        V_RELEASE="${BASH_REMATCH[2],,}"
+        V_NAME="${BASH_REMATCH[1]}"
+        V_RELEASE="${BASH_REMATCH[2]}"
     else
         V_NAME="$V_IMAGE"
         V_RELEASE=""
     fi
+    V_NAME=$( strtolower "$V_NAME" )
+    V_RELEASE=$( strtolower "$V_RELEASE" )
     V_RELEASE_NAME="$V_RELEASE"
     [[ "$V_RELEASE_NAME" == "" ]] && V_RELEASE_NAME="latest"
 
@@ -175,18 +188,19 @@ for V_IMAGE in "${V_IMAGES[@]}"; do
                 echo -e -n "(\033[032my\033[0mes/Yes to \033[032ma\033[0mll/\033[032mN\033[0mo/\033[032ms\033[0mkip all)\033[032m"
                 read -p " " V_CONFIRM
                 echo -e "\033[0m"
-                if [[ "${V_CONFIRM,,}" == "a" ]]; then
+                V_CONFIRM=$( strtolower "$V_CONFIRM" )
+                if [[ "${V_CONFIRM}" == "a" ]]; then
                     V_YES_TO_ALL=1
                     V_CONFIRM="y"
                 else
-                    if [[ "${V_CONFIRM,,}" == "s" ]]; then
+                    if [[ "${V_CONFIRM}" == "s" ]]; then
                         V_NO_TO_ALL=1
                         V_CONFIRM="n"
                     fi
                 fi
             fi
         fi
-        if [[ "${V_CONFIRM,,}" != "y" ]]; then
+        if [[ "${V_CONFIRM}" != "y" ]]; then
             echo -e "\033[031mskipped\033[0m"
             continue
         else
