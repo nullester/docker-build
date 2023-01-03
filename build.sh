@@ -23,7 +23,12 @@ fi
 
 V_ROOT=$( dirname $( realpath "$0" ) )
 
-echo -e "Docker Build \033[032m$( cat "$V_ROOT/VERSION")\033[0m"
+F_BLD_VERSION() {
+    local V_VERSION=$( cat "$V_ROOT/VERSION" )
+    echo -n "$V_VERSION"
+}
+
+echo -e "Docker Build \033[032m$( F_BLD_VERSION )\033[0m"
 
 F_TAG_EXISTS() {
     local V_TAG="$1"
@@ -32,6 +37,22 @@ F_TAG_EXISTS() {
     else
         echo -n 0
     fi
+}
+
+F_BLD_HELP() {
+    local V_HELP=$( cat << EOF
+Docker Build \033[032mv$( F_BLD_VERSION )\033[0m
+Usage: \033[032m./build.sh [options] {image1 [image2] [...]}\033[0m
+Options:
+    -c, --cache          use cache, default 0
+    -h, --help           show help
+    -m, --maintainer     maintainer
+    -y, --yes            set yes to all, default 0
+    -q, --quiet          quiet mode, default 0
+EOF
+)
+    echo -e "${V_HELP}"
+    exit 0
 }
 
 if [ $( which docker | wc -l ) -eq 0 ]; then
@@ -49,6 +70,9 @@ while (( "$#" )); do
         -c|--cache)
             V_CACHE=1
             shift
+            ;;
+        -h|--help)
+            F_BLD_HELP
             ;;
         -y|--yes|--yes-to-all)
             V_YES_TO_ALL=1
